@@ -1,249 +1,336 @@
-# C - _printf
+# 🖨️ Custom `_printf` Project
 
-Master
-By: Julien Barbier, co-founder & CEO
-Projet: Écrire votre propre fonction _printf en C. Travaux en binôme.
-Table des matières
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
-11.
-12.
-13.
-14.
-Description
-Objectifs pédagogiques
-Prérequis & contraintes
-Spécifications fonctionnelles
-Installation & compilation
-Utilisation
-Exemples
-Tests recommandés
-Conventions de code
-Workflow Git (suggestion pour 2 personnes)
-Répartition des tâches (suggestion)
-Checklist QA / livraison
-Ressources utiles
-Auteurs
-1. Description
-Ce projet a pour but d'implémenter une version simplifiée de la fonction printf :
-•
-•
-•
-Prototype attendu : int _printf(const char *format, ...);
-Écrire une fonction qui écrit sur la sortie standard ( stdout ) et qui retourne le nombre de
-caractères imprimés (sans le \0 final).
-La fonction doit supporter un sous-ensemble de conversions (voir section 4).
-Ce dépôt représente le travail du binôme. Respectez les règles de style, les limitations
-d'outils et gardez le dépôt propre (pas de main.c à la racine).
-2. Objectifs pédagogiques
-•
-•
-•
-•
-Comprendre les varargs ( stdarg.h ) et l'API va_start, va_arg, va_end.
-Gérer la mise en forme de sorties (conversion d'entiers, chaînes, caractères).
-Travailler en binôme et organiser le travail via Git.
-Respecter des contraintes de compilation strictes et des conventions de style (Betty).
-3. Prérequis & contraintes
-•
-•
-Environnement de compilation : Ubuntu 20.04 LTS, Options de compilation (utilisées par la correction) :
-gcc.
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
-•
-•
-•
-•
-•
-•
-•
-Éditeurs autorisés : vi , vim , emacs .
-Ne pas utiliser de variables globales.
-Maximum 5 fonctions par fichier.
-Tous les fichiers doivent se terminer par une nouvelle ligne.
-Respecter la Betty style (utilisez betty-style.pl et betty-doc.pl ).
-Un fichier main.h doit contenir toutes les prototypes et les protections d'inclusion (include
-guards).
-Ne pas mettre de main.c dans la racine (créez un dossier tests/ pour vos fichiers de test).
-4. Spécifications fonctionnelles (obligatoires pour la version 0)
-Vous devez implémenter _printf qui reconnaît au minimum les conversions suivantes : - %c —
-caractère - %s — chaîne - %% — caractère pourcentage littéral
-Simplifications autorisées : - Pas besoin de reproduire la gestion avancée du buffering de la libc. - Pas
-besoin d'implémenter les flags (-
-+
-,
-, , # , 0 ). - Pas besoin d'implémenter le champ de largeur
-(field width). - Pas besoin d'implémenter la précision. - Pas besoin d'implémenter les modificateurs de
-longueur (l, h, etc.).
-Si vous choisissez d'implémenter des conversions additionnelles (ex. %d , %i , %u ,
-%o , %x , %p ), documentez-les dans le README et fournissez des tests.
-5. Installation & compilation
-1.
-Cloner le repo :
-git clone <url_du_repo>
-cd holbertonschool-printf
-2.
-Compiler (exemple) :
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
-3.
-Exécuter votre binaire depuis tests/ si vous en avez un :
-./tests/my_printf_test
-6. Utilisation
-•
-•
-•
-Inclure : #include "main.h"
-Appeler : _printf("Hello %s!\n", name);
-La fonction doit écrire sur stdout et renvoyer le nombre de caractères écrits.
-7. Exemples
-Un fichier tests/main.c (exemple) peut contenir le test fourni par la correction
-(affiche diverses conversions). N'oubliez pas de ne pas mettre votre main.c d'essai à la
-racine du projet.
-Extrait d'exemple d'utilisation (non poussé à la racine) :
-_printf("Character:[%c]\n"
-_printf("String:[%s]\n"
-_printf("Percent:[%%]\n");
-, 'H');
-, "I am a string !");
-8. Tests recommandés
-•
-•
-•
-•
-•
-Comparer le comportement de _printf et de printf sur les cas supportés.
-Cas d'erreur : NULL pour %s (décidez d'un comportement — par exemple afficher (null)
-comme la libc ou rien — documentez-le).
-Chaînes vides, caractères nuls, très longues chaînes.
-Mélanges de conversions dans une même chaîne.
-Tests de comptage : vérifiez que la valeur de retour correspond au nombre de caractères
-affichés.
-9. Conventions de code
-•
-•
-•
-•
-•
-Respecter la Betty style.
-Prototypes dans main.h.
-Include guards dans tous les headers.
-Pas plus de 5 fonctions par fichier.
-Pas de variables globales.
-10. Workflow Git (suggestion) — Les 4 branches
-Pour organiser le travail en binôme, voici une stratégie simple et efficace utilisant 4 branches :
-1.
-2.
-3.
-4.
-5.
-6.
-main
-Branche protégée. Contient le code validé prêt à être livré.
-develop
-Branche d’intégration où toutes les fonctionnalités complètes sont mergées avant d’être
-promues sur main .
-feature/<initiales>-<nom>
-Chaque développeur crée sa branche de fonctionnalité depuis develop . Exemple : feature/
-TD-printf-basic ou feature/TH-string-fmt.
-7.
-8.
-9.
-Travailler localement, commits clairs, puis push et pull request vers develop.
-tests
-Branche dédiée aux tests automatisés et à la suite de tests. Permet d’isoler les modifications de
-tests et d’éviter de polluer develop.
-Flux recommandé : - Créer develop depuis main (si elle n'existe pas). - Chaque dev crée feature/
-<initiales>-... depuis develop . - Ouvrir une PR (pull request) vers develop quand la feature
-est prête. - Revue de code par l'autre membre — corriger, puis merger dans develop . - Quand
-develop est stable et validé par QA, créer une PR vers main et tagger une release. - Utiliser tests
-pour ajouter/mettre à jour la suite de tests ; merger tests dans develop quand les tests passent.
-Commandes utiles :
-# créer et basculer sur une feature branch
-git checkout -b feature/TD-myfeature develop
-# push de la feature vers remote
-git push -u origin feature/TD-myfeature
-# mettre à jour votre branche avec develop
-git fetch origin
-git checkout feature/TD-myfeature
-git merge origin/develop
-# ouvrir PR depuis l'interface GitHub vers develop
-11. Répartition des tâches (suggestion pour un binôme)
-But : clarté et responsabilité, éviter les conflits.
-•
-•
-•
-•
-Dév A (ex: Thelyaan Dufrenoy)
-Implémentation des conversions de base : %c , %s , %% .
-Gestion des cas NULL pour %s .
-Tests unitaires simples.
-•
-Dév B (ex: Thomas Haenel)
-•
-•
-•
-Mise en place de l'infrastructure _printf (parsing, appel de handlers).
-Documentation, main.h , prototypes, make/test scripts.
-Tests d'intégration et comparaison avec printf.
-Travail commun : - Relecture de code (PRs), QA manuelle, validation finale sur develop puis main .
-12. Checklist QA / livraison
-•
-•
-•
-[ ] Tous les fichiers compilent avec les flags exigés.
-[ ] Pas de main.c dans la racine.
-[ ] Respect de la Betty style (aucune erreur avec betty-style.pl ).
-•
-•
-•
-•
-•
-[ ] main.h présent avec include guards et prototypes.
-[ ] Pas de variables globales.
-[ ] Tests pour tous les cas requis et edge-cases.
-[ ] Revue de code effectuée par le binôme.
-[ ] QA manuelle demandée (conformément aux instructions du projet).
-13. Ressources utiles
-•
-•
-•
-man printf ( man 3 printf ) — pour comprendre le comportement attendu.
-man va_start, man va_arg, man va_end.
-Flowcharts et bonnes pratiques de pair programming (liens fournis dans l'énoncé du projet).
-14. Auteurs
-•
-•
-•
-Julien Barbier — co-founder & CEO (métadonnées)
-Thelyaan Dufrenoy — Développeur
-Thomas Haenel — Développeur
-Rappel technique rapide : "%" et "\\" suivis d'un caractère
-•
-% suivi d'un caractère dans une chaîne de format (ex: "%s" , "%d" ) indique un spécificateur
-de conversion pour _printf / printf . Exemple : %s → afficher une chaîne, %c → afficher
-un caractère, %% → afficher un % littéral.
-•
-\ (antislash) suivi d'un caractère dans un littéral de chaîne en C est une séquence
-d'échappement :
-•
-•
-•
-•
-\n → saut de ligne (newline)
-\t → tabulation
-\\ → caractère \
-\" → guillemet double dans une chaîne, etc.
-Note : l'énoncé parlait de / mais, en C, le caractère d'échappement est \\ (backslash).
-Le caractère / est simplement un slash et n'indique pas d'échappement.
-Si tu veux, je peux : - Ajouter une liste de tests complète (fichier tests/test_suite.sh ), - Préparer
-un template main.h , - Créer un exemple de feature branch et des instructions pas-à-pas pour la
-PR.
-Dis-moi ce que tu veux que j'ajoute/modifie et je le fais dans le README directement.
+Projet réalisé dans le cadre du programme **Holberton School** – Recréation partielle de la fonction standard `printf`.
+
+---
+
+## 📌 Objectif du Projet
+Implémenter une fonction `_printf` capable d'afficher du texte selon un format précis, en gérant une partie des spécificateurs utilisés par la fonction standard `printf` de la bibliothèque C.
+
+Prototype attendu :
+```c
+int _printf(const char *format, ...);
+```
+
+Votre fonction doit :
+- Écrire sur **stdout**.
+- Retourner le **nombre total de caractères imprimés**.
+- Gérer certains spécificateurs du `printf` classique.
+- Utiliser les **variadic functions** (`stdarg.h`).
+
+---
+
+## ✅ Spécificateurs gérés
+Votre `_printf` doit gérer les conversions suivantes :
+
+| Spécificateur | Description |
+|--------------|-------------|
+| `%c` | Affiche un caractère |
+| `%s` | Affiche une chaîne de caractères |
+| `%%` | Affiche le caractère `%` |
+
+> 🚫 Vous n'avez PAS à gérer : flags, field width, precision, length modifiers, ni tous les autres types (`d`, `i`, `u`, `x`...).
+
+---
+
+## 📁 Organisation des Fichiers
+Le projet doit être organisé comme suit :
+```
+holbertonschool-printf/
+│
+├── _printf.c          # Fonction principale
+├── main.h             # Header contenant prototypes et includes
+├── utils.c            # Fonctions utilitaires (ex : print_char, print_string)
+├── man_3_printf       # Page de manuel
+└── README.md          # Documentation du projet
+```
+
+---
+
+## 🧩 Fonctionnement Global
+### 🔹 1. Parcours du format
+`_printf` lit la chaîne caractère par caractère.
+- Si le caractère n’est pas `%` → il est affiché tel quel.
+- Si `%` est détecté → on regarde le caractère qui suit pour déterminer le bon traitement.
+
+### 🔹 2. Gestion des arguments variables
+Le projet utilise :
+```c
+#include <stdarg.h>
+```
+Pour récupérer les arguments passés après `format` :
+- `va_list`
+- `va_start`
+- `va_arg`
+- `va_end`
+
+### 🔹 3. Gestion des erreurs
+Votre fonction doit :
+- Retourner `-1` si **format est NULL**.
+- Retourner `-1` si un `%` est suivi d’un **caractère non géré**.
+- Imprimer `(null)` si une chaîne `%s` vaut `NULL`.
+
+---
+
+## 🚀 Exemple d’Utilisation
+```c
+int len = _printf("Hello %s! This is char: %c and percent: %%
+", "world", 'X');
+printf("Printed length = %d
+", len);
+```
+Sortie :
+```
+Hello world! This is char: X and percent: %
+Printed length = 49
+```
+
+---
+
+## 🧪 Compilation & Test
+```bash
+gcc -Wall -Wextra -Werror -pedantic *.c -o printf
+./printf
+```
+
+---
+
+## 🤝 Travail en Binôme
+Pour organiser efficacement le travail :
+### 🔸 Branche personnelle
+Chaque membre crée une branche :
+```bash
+git checkout -b dev-tonprenom
+```
+
+### 🔸 Fusion (pull request)
+Les contributions sont fusionnées dans `main` lorsqu’elles sont stables.
+
+### 🔸 Bonne pratique Git
+- Commit fréquemment
+- Push tôt, push souvent
+- Messages de commit clairs
+- Résoudre les conflits ensemble
+
+---
+
+## 🧼 Norme Betty
+Tout le code doit respecter :
+- **Betty-style**
+- **Betty-doc**
+
+Commandes de vérification :
+```bash
+betty *.c
+betty *.h
+```
+
+---
+
+## 📖 Ressources utiles
+- `man 3 printf`
+- `man 3 stdarg`
+- Documentation Holberton sur les variadic functions
+
+---
+
+## ✨ Auteurs
+Projet réalisé par :
+- **Ton Nom (@ton_github)**
+- **Ton/binôme (@github_binome)**
+
+---
+
+Si tu veux, je peux aussi créer :
+- un diagramme de fonctionnement
+- un guide pour les tests unitaires
+- un Makefile complet
+- ou documenter chaque fonction indépendamment.
+/* main.h */
+#ifndef MAIN_H
+#define MAIN_H
+
+#include <stdarg.h>
+#include <stddef.h>
+
+/* Prototype for our printf replacement */
+int _printf(const char *format, ...);
+
+/* low-level output */
+int _putchar(char c);
+int _puts(const char *s);
+
+/* handlers */
+int handle_char(va_list args);
+int handle_string(va_list args);
+int handle_percent(void);
+
+#endif /* MAIN_H */
+
+
+/* _putchar.c */
+#include "main.h"
+#include <unistd.h>
+
+/**
+ * _putchar - writes a single character to stdout
+ * @c: character to write
+ *
+ * Return: number of bytes written (1) or -1 on error
+ */
+int _putchar(char c)
+{
+	if (write(1, &c, 1) != 1)
+		return (-1);
+	return (1);
+}
+
+/**
+ * _puts - writes a NUL-terminated string to stdout
+ * @s: input string
+ *
+ * Return: number of characters written or -1 on error
+ */
+int _puts(const char *s)
+{
+	int count = 0;
+	const char *p = s;
+
+	if (s == NULL)
+	{
+		/* write (null) as a convention */
+		p = "(null)";
+	}
+
+	while (*p)
+	{
+		if (_putchar(*p) < 0)
+			return (-1);
+		count++;
+		p++;
+	}
+	return (count);
+}
+
+
+/* handlers.c */
+#include "main.h"
+
+/**
+ * handle_char - get a char from va_list and print it
+ * @args: va_list containing the argument
+ *
+ * Return: number of characters printed (1) or -1 on error
+ */
+int handle_char(va_list args)
+{
+	int c = va_arg(args, int);
+	return (_putchar((char)c));
+}
+
+/**
+ * handle_string - get a string from va_list and print it
+ * @args: va_list containing the argument
+ *
+ * Return: number of characters printed or -1 on error
+ */
+int handle_string(va_list args)
+{
+	char *s = va_arg(args, char *);
+	return (_puts(s));
+}
+
+/**
+ * handle_percent - print a literal percent sign
+ *
+ * Return: number of characters printed (1) or -1 on error
+ */
+int handle_percent(void)
+{
+	return (_putchar('%'));
+}
+
+
+/* _printf.c */
+#include "main.h"
+#include <stdarg.h>
+
+/**
+ * _printf - simplified printf that supports %c, %s and %%
+ * @format: format string
+ * @...: arguments corresponding to format specifiers
+ *
+ * Return: number of characters printed (excluding terminating '\0'),
+ *         or -1 on error (for example, NULL format)
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int printed = 0;
+	int res;
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(args, format);
+
+	while (*format)
+	{
+		if (*format != '%')
+		{
+			res = _putchar(*format);
+			if (res < 0)
+			{
+				va_end(args);
+				return (-1);
+			}
+			printed += res;
+			format++;
+			continue;
+		}
+
+		/* we have a '%' */
+		format++; /* move past '%' */
+		if (*format == '\0')
+		{
+			/* malformed format string: trailing '%' */
+			va_end(args);
+			return (-1);
+		}
+
+		switch (*format)
+		{
+			case 'c':
+				res = handle_char(args);
+				break;
+			case 's':
+				res = handle_string(args);
+				break;
+			case '%':
+				res = handle_percent();
+				break;
+			default:
+				/* Unknown specifier: print '%' then the char (mirrors many simple
+				   custom printf implementations and avoids undefined behaviour)
+				 */
+				if (_putchar('%') < 0)
+				{
+					va_end(args);
+					return (-1);
+				}
+				printed++;
+				res = _putchar(*format);
+		}
+
+		if (res < 0)
+		{
+			va_end(args);
+			return (-1);
+		}
+		printed += res;
+		format++;
+	}
+
+	va_end(args);
+	return (printed);
+}
