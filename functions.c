@@ -1,82 +1,41 @@
 #include "main.h"
 
 /**
- * print_char - Affiche un caractère
- * @args: Liste d'arguments
- * Return: 1
+ * print_number - prints an integer and returns count of chars printed
+ * @n: integer to print
+ * Return: number of characters printed
  */
-int print_char(va_list args)
+int print_number(int n)
 {
-	char c = va_arg(args, int);
-	return (_putchar(c));
-}
+    char buffer[12]; /* enough for "-2147483648" + '\0' */
+    int i = 0, j;
+    unsigned int num;
+    int count = 0;
 
-/**
- * print_string - Affiche une chaîne de caractères
- * @args: Liste d'arguments
- * Return: Nombre de caractères affichés
- */
-int print_string(va_list args)
-{
-	char *str = va_arg(args, char *);
-	int i = 0;
+    if (n < 0)
+    {
+        _putchar('-');
+        count++;
+        /* handle INT_MIN safely */
+        num = (unsigned int)(-(n + 1)) + 1;
+    }
+    else
+        num = (unsigned int)n;
 
-	if (str == NULL)
-		str = "(null)";
+    if (num == 0)
+    {
+        _putchar('0');
+        return (count + 1);
+    }
 
-	while (str[i])
-	{
-		_putchar(str[i]);
-		i++;
-	}
-	return (i);
-}
+    while (num > 0)
+    {
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    }
 
-/**
- * print_percent - Affiche le symbole %
- * @args: Liste d'arguments (non utilisée)
- * Return: 1
- */
-int print_percent(va_list args)
-{
-	(void)args;
-	return (_putchar('%'));
-}
+    for (j = i - 1; j >= 0; j--)
+        count += _putchar(buffer[j]);
 
-/**
- * print_int - Affiche un entier (pour d et i)
- * @args: Liste d'arguments
- * Return: Nombre de chiffres affichés
- */
-int print_int(va_list args)
-{
-	int n = va_arg(args, int);
-	int count = 0;
-	unsigned int num;
-	unsigned int div = 1;
-
-	/* Gestion du signe */
-	if (n < 0)
-	{
-		count += _putchar('-');
-		num = (unsigned int)-n;
-	}
-	else
-	{
-		num = (unsigned int)n;
-	}
-
-	/* Calcul du diviseur pour extraire les chiffres un par un */
-	while (num / div > 9)
-		div *= 10;
-
-	/* Boucle d'affichage */
-	while (div != 0)
-	{
-		count += _putchar((num / div) + '0');
-		num %= div;
-		div /= 10;
-	}
-
-	return (count);
+    return (count);
 }
