@@ -9,6 +9,8 @@
  * Prototype principal de _printf
  */
 int _printf(const char *format, ...);
+int _putchar(char c);
+int print_number(int n);
 
 /**
  * Type pour associer un caractère de spécificateur à une fonction handler.
