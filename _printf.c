@@ -1,78 +1,80 @@
-#include "main.h"
-
-/**
- * get_op - Sélectionne la fonction correspondant au caractère
- * @c: Le caractère specifier (c, s, %, d, i)
- *
- * Return: Pointeur vers la fonction ou NULL
+/* _printf.c
+ * Simplified _printf: supports %c, %s, %%, %d and %i
  */
-int (*get_op(char c))(va_list)
-{
-	specifier_t specs[] = {
-		{'c', print_char},
-		{'s', print_string},
-		{'%', print_percent},
-		{'d', print_int},
-		{'i', print_int},
-		{'\0', NULL}
-	};
-	int i = 0;
 
-	while (specs[i].type != '\0')
-	{
-		if (specs[i].type == c)
-			return (specs[i].func);
-		i++;
-	}
-	return (NULL);
-}
+#include "main.h"
+#include <stdarg.h>
 
 /**
- * _printf - Fonction principale
- * @format: Chaîne de format
+ * _printf - prints formatted output (supports c, s, %, d, i)
+ * @format: format string
  *
- * Return: Nombre de caractères imprimés
+ * Return: number of characters printed, or -1 on error (format == NULL)
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, count = 0;
-	int (*f)(va_list);
+    va_list args;
+    int total = 0;
+    int i = 0;
+    char *s;
+    char ch;
+    int n;
+    int printed;
 
-	if (format == NULL)
-		return (-1);
+    if (format == NULL)
+        return (-1);
 
-	va_start(args, format);
-	while (format[i])
-	{
-		/* Cas normal : on imprime le caractère */
-		if (format[i] != '%')
-		{
-			_putchar(format[i]);
-			count++;
-			i++;
-			continue;
-		}
+    va_start(args, format);
 
-		/* Cas du % : On regarde le suivant */
-		if (format[i + 1] == '\0') /* Erreur: fin de chaîne après % */
-			return (-1);
+    while (format[i])
+    {
+        if (format[i] == '%')
+        {
+            i++;
+            /* stray '%' at end */
+            if (format[i] == '\0')
+                break;
 
-		f = get_op(format[i + 1]);
+            switch (format[i])
+            {
+            case 'c':
+                ch = (char)va_arg(args, int);
+                _putchar(ch);
+                total++;
+                break;
+            case 's':
+                s = va_arg(args, char *);
+                if (s == NULL)
+                    s = "(null)";
+                for (printed = 0; s[printed]; printed++)
+                    _putchar(s[printed]);
+                total += printed;
+                break;
+            case '%':
+                _putchar('%');
+                total++;
+                break;
+            case 'd':
+            case 'i':
+                n = va_arg(args, int);
+                total += print_number(n);
+                break;
+            default:
+                /* unknown specifier: print '%' and the char literally */
+                _putchar('%');
+                _putchar(format[i]);
+                total += 2;
+                break;
+            }
+        }
+        else
+        {
+            _putchar(format[i]);
+            total++;
+        }
+        i++;
+    }
 
-		if (f != NULL) /* Specifier trouvé */
-		{
-			count += f(args);
-			i += 2;
-		}
-		else /* Specifier inconnu : on imprime le % et le char */
-		{
-			_putchar('%');
-			_putchar(format[i + 1]);
-			count += 2;
-			i += 2;
-		}
-	}
-	va_end(args);
-	return (count);
+    va_end(args);
+    return (total);
 }
