@@ -29,5 +29,6 @@ int print_char(va_list args);
 int print_string(va_list args);
 int print_percent(va_list args);
 int (*get_specifier_func(char c))(va_list);
+int print_number(int n);
 
 #endif /* MAIN_H */
