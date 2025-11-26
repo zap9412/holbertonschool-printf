@@ -1,15 +1,10 @@
-/* _printf.c
- * Simplified _printf: supports %c, %s, %%, %d and %i
- */
-
 #include "main.h"
 #include <stdarg.h>
 
 /**
- * _printf - prints formatted output (supports c, s, %, d, i)
+ * _printf - simplified printf: supports c, s, %, d, i
  * @format: format string
- *
- * Return: number of characters printed, or -1 on error (format == NULL)
+ * Return: number of characters printed, or -1 on NULL format
  */
 int _printf(const char *format, ...)
 {
@@ -31,7 +26,6 @@ int _printf(const char *format, ...)
         if (format[i] == '%')
         {
             i++;
-            /* stray '%' at end */
             if (format[i] == '\0')
                 break;
 
@@ -60,7 +54,6 @@ int _printf(const char *format, ...)
                 total += print_number(n);
                 break;
             default:
-                /* unknown specifier: print '%' and the char literally */
                 _putchar('%');
                 _putchar(format[i]);
                 total += 2;
