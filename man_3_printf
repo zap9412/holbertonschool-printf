@@ -1,0 +1,54 @@
+.TH _PRINTF 3 "27 November 2025" "holbertonschool-printf" "Library Functions"
+.SH NAME
+_printf - simplified printf-like function
+.SH SYNOPSIS
+.nf
+#include "main.h"
+
+int _printf(const char *format, ...);
+.fi
+.SH DESCRIPTION
+_printf formats and writes output to standard output (stdout) according to the contents of the format string `format` and any additional arguments.
+
+This implementation is a simplified reimplementation of the standard C library `printf(3)`. It supports the following conversion specifiers:
+.PP
+.TP
+\fIc\fR
+Print a single character. The corresponding argument is promoted to `int` and converted to an unsigned char before printing.
+.TP
+\fIs\fR
+Print a null-terminated string. If the corresponding argument is `NULL`, the string `(null)` is printed.
+.TP
+\fI%\fR
+Print a literal percent sign.
+.TP
+\fId\fR, \fIi\fR
+Print a signed decimal integer. The corresponding argument is converted to `int` and printed in base 10. Negative numbers are preceded by a minus sign. The implementation handles the `INT_MIN` edge case correctly.
+.SH RETURN VALUE
+Upon successful completion, `_printf` returns the number of characters printed to `stdout`. If `format` is a null pointer, `_printf` returns `-1` to indicate an error.
+.SH ERRORS
+This simplified implementation does not set `errno`. If an unsupported conversion specifier is encountered (for example `%x`), the function prints the percent sign and the unknown specifier literally (for example `%x`) and continues processing.
+
+If the format string ends with a single `%` character with no following specifier, the trailing `%` is ignored.
+.SH EXAMPLES
+Print a string and an integer:
+.nf
+_printf("Hello %s\n", "world");
+_printf("Value: %d\n", 42);
+.fi
+Print a character and a percent sign:
+.nf
+_printf("Char: %c, Percent: %%\n", 'A');
+.fi
+Handling a NULL string:
+.nf
+_printf("%s\n", (char *)NULL);  /* prints (null) */
+.fi
+.SH NOTES
+This `_printf` implementation is intentionally limited for educational purposes and to meet the constraints of the Holberton project. It does not implement flags, field width, precision, length modifiers, or the full set of standard `printf(3)` conversion specifiers.
+.SH SEE ALSO
+printf(3), write(2), va_arg(3)
+.SH AUTHOR
+Implemented as part of the Holberton School curriculum.
+.SH BUGS
+This simplified implementation may behave differently from the system `printf(3)` in corner cases and does not aim to be a drop-in replacement for production use.
